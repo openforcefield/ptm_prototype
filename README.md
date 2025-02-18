@@ -10,7 +10,7 @@ micromamba run -n openff_ptm_prototype pip install git+https://github.com/openfo
 micromamba run -n openff_ptm_prototype jupyter lab ptm_sim.ipynb
 ```
 
-Distributions like Arch with very recent Glibc (<=2.41) don't play well with the version of PyTorch installed in the above configuration. If you get an "ImportError: libtorch_cpu.so: cannot enable executable stack as shared object requires: Invalid argument" error, try:
+Distributions like Arch with very recent Glibc (>=2.41) don't play well with the version of PyTorch installed in the above configuration. If you get an "ImportError: libtorch_cpu.so: cannot enable executable stack as shared object requires: Invalid argument" error, try:
 
 ```shell
 git clone https://github.com/openforcefield/ptm_prototype.git
