@@ -5,7 +5,7 @@ To run:
 ```shell
 git clone https://github.com/openforcefield/ptm_prototype.git
 cd ptm_prototype
-micromamba create -n openff_ptm_prototype openff-toolkit-examples python=3.11 pyxdg
+micromamba create -n openff_ptm_prototype -c conda-forge openff-toolkit-examples python=3.11 pyxdg
 micromamba run -n openff_ptm_prototype pip install git+https://github.com/openforcefield/openff-pablo.git@v0.0.1a1
 micromamba run -n openff_ptm_prototype jupyter lab ptm_sim.ipynb
 ```
