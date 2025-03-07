@@ -16,7 +16,7 @@ micromamba run -n openff_ptm_prototype jupyter lab ptm_sim.ipynb
 
 ## Long description
 
-Since "Rosemary" (our upcoming protein+small molecule force field that will handle PTMs natively) is taking a while, we wanted to start building the _infrastructure_ to do PTM parameterization now, so it will be ready on the day that Rosemary force field is released. This notebook shows how to parameterize and simulate a modified protein using a chimera of the SMIRNOFF port of AMBER's FF14SB for canonical amino acids and OpenFF's Sage for noncanonical amino acids.
+Since "Rosemary" (our upcoming protein+small molecule force field that will handle PTMs natively) is taking a while, we wanted to start building the _infrastructure_ to do PTM parameterization now, so it will be ready on the day that Rosemary force field is released. This notebook shows how to parameterize and simulate a modified protein using (the SMIRNOFF port of AMBER's FF14SB) for canonical amino acids and (OpenFF Sage) for noncanonical amino acids.
 
 The notebook also demonstrates two important upcoming features that we intend to support long-term:
 
