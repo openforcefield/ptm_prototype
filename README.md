@@ -20,8 +20,8 @@ Since "Rosemary" (our upcoming protein+small molecule force field that will hand
 
 The notebook also demonstrates two important upcoming features that we intend to support long-term:
 
-* `openff-pablo`: Our new, performant PDB loader that will eventually supersede `Topology.from_pdb`. Currently only handles PDB files, but will handle PDBx/mmCIF in the future.
-* `parameterize_with_nagl`: A concept of the "swiss cheese" partial charge assignment method, where one force field with library charges (in this case, our FF14SB port) assigns partial charges to as much of a molecule as it can, and then a NAGL model assigns partial charges to the rest. 
+* [`openff-pablo`](https://github.com/openforcefield/openff-pablo): Our new, performant PDB loader that will eventually get merged into [`Topology.from_pdb`](https://docs.openforcefield.org/projects/toolkit/en/stable/users/pdb_cookbook/index.html). Currently only handles PDB files, but will handle PDBx/mmCIF in the future.
+* `parameterize_with_nagl`: A concept of the "swiss cheese" partial charge assignment method, where a force field with library charges (in this case, our FF14SB port) assigns partial charges to as much of a molecule as it can, and then a NAGL model assigns partial charges to the rest. 
 
 Once Rosemary comes out, the `parameterize_with_nagl` function will likely become unnecessary (since Rosemary is on track to use a NAGL model for all charge assignment), and we will switch to recommending Rosemary alone instead of FF14SB+Sage. However the loading functionality in `openff-pablo` will continue to be needed to load modified proteins into the OpenFF ecosystem.
 
@@ -33,12 +33,12 @@ The `ptm_sim.ipynb` notebook in this repo shows an example of using these new fe
     * In this case, we use the `ResidueDefinition.from_molecule` method, by making an OpenFF Molecule where a cysteine is attached to a covalent ligand using a SMARTS reaction.
     * You don't have to do it exactly this way for your own custom residues - We offer [different methods](https://openff-pablo.readthedocs.io/en/latest/api/generated/openff.pablo.ResidueDefinition.html) for constructing `ResidueDefinitions` and would love your suggestions for more.
     * The atom names in this `ResidueDefinition` are required to match those used for the modified residue in the input PDB.
-    * If the element+connectivity based template matching that's already available in `Topology.from_pdb` is sufficient for you (namely, if your input PDB file has CONECT records) you can continue using that, and you don't need to make an openff-pablo `ResidueDefinition`.
+    * If your input PDB has CONECT records for all nonstandard residues, you don't need to use openff-pablo, and can instead use the `_additional_substructures` and `_custom_substructures` arguments to `Topology.from_pdb` (this is a bit slower since it has to do graph matching, but it doesn't require you to match up atom/residue names between the PDB and substructure)
 * Solvates the modified protein in a water box
 * Uses the `parameterize_with_nagl` method to assign ff14SB parameters to unmodified amino acids, and Sage parameters with NAGL charges to everything else. 
 * Runs a short simulation
 
-## Debugging occasional environment issues
+## Occasional installation issues
 
 Distributions like Arch with very recent Glibc (>=2.41) don't play well with the version of PyTorch installed in the above configuration. If you get an "ImportError: libtorch_cpu.so: cannot enable executable stack as shared object requires: Invalid argument" error, try:
 
