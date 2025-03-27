@@ -38,20 +38,10 @@ The `ptm_sim.ipynb` notebook in this repo shows an example of using these new fe
 * Uses the `parameterize_with_nagl` method to assign ff14SB parameters to unmodified amino acids, and Sage parameters with NAGL charges to everything else. 
 * Runs a short simulation
 
-## Occasional installation issues
-
-Distributions like Arch with very recent Glibc (>=2.41) don't play well with the version of PyTorch installed in the above configuration. If you get an "ImportError: libtorch_cpu.so: cannot enable executable stack as shared object requires: Invalid argument" error, try:
-
-```shell
-git clone https://github.com/openforcefield/ptm_prototype.git
-cd ptm_prototype
-micromamba create -n openff_ptm_prototype -f env.yaml
-micromamba run -n openff_ptm_prototype jupyter lab ptm_sim.ipynb
-```
+## How can I load a modified protein?
 
 
 ```mermaid
-%%{init: {'themeVariables': {'fontSize': '20px'}}}%%
 flowchart TB
     0@{ shape: diamond, label: "Do you have a structure of the modified protein with all hydrogens added?" }
     0-->|No|0A
@@ -62,11 +52,15 @@ flowchart TB
     
     1@{ shape: diamond, label: "Do you have a RDKit or OpenEye Molecule of your modified protein?" }
     1-->|Yes|1A
-    1A@{ shape: rectangle, label: "<pre style='white-space: pre-wrap; text-align: left; width: 400px;'>Molecule.from_rdkit(rdmol)
-    # or
-    Molecule.from_openeye(oemol)</pre>"}
-    
     1-->|No|2
+
+    1A@{ shape: rectangle, label: "<pre style='white-space: pre-wrap; text-align: left; width: 400px;'>offmol = Molecule.from_rdkit(rdmol)
+    # or
+    offmol = Molecule.from_openeye(oemol)
+    # and finally
+    top = offmol.to_topology()</pre>"}
+    1A-->20
+
     2@{ shape: diamond, label: "Do you have an SDF file of the modified protein?"}
     2-->|Yes|2A
     2-->|No|2P5
@@ -80,10 +74,14 @@ flowchart TB
     from openmm.app import PDBFile
     pdb = PDBFile('protein.pdb')
     top = Topology.from_openmm(pdb.topology, unique_molecules=[ref_mol], positions=pdb.positions)</pre>"}
+    2AA-->20
     
     2AB@{ shape: rectangle, label: "<pre style='white-space: pre-wrap; text-align: left; width: 500px;'>offmol = Molecule.from_file('protein.sdf')
     #(then optionally)
-    offmol.percieve_residues()</pre>"}
+    offmol.percieve_residues()
+    # and finally
+    top = offmol.to_topology()</pre>"}
+    2AB-->20
     
     2P5@{ shape: rectangle, label: "You must have SDF/SMILES of at least modification, if not the whole residue (for CCD residues, you can download the 'ideal' SDF from RCSB PDB)"}
     2P5-->|Yes|3
@@ -106,6 +104,7 @@ smarts = 'C(=O)C([H:1])CC(=O)'
 &nbsp;&nbsp;&nbsp;&nbsp;print(f'marking {atom_idx=} as leaving')
 &nbsp;&nbsp;&nbsp;&nbsp;mol.atom(atom_idx).metadata['substructure_atom'] = False
 top = Topology.from_pdb('3ip9_dye.pdb', _additional_substructures=[mol])</pre>"}
+    5-->20
     
     6@{ shape: diamond, label: "Does the ENTIRE modified residue have CONECT records (not just the covalent attachment)?"}
     6-->|Yes|7
@@ -153,6 +152,7 @@ for atom_idx in mod_res.chemical_environment_matches(backbone_smarts)[0]:
 &nbsp;&nbsp;&nbsp;&nbsp;mod_res.atom(atom_idx).metadata['substructure_atom'] = False
 top = Topology.from_pdb('3ip9_dye.pdb', _additional_substructures=[mod_res])
 </pre>"}
+    10-->20
 
     14@{ shape: rectangle, label: "Follow the instructions in our <a href='https://github.com/openforcefield/ptm_prototype' target='_blank'>PTM Prototype notebook</a>"}
     
@@ -160,4 +160,19 @@ top = Topology.from_pdb('3ip9_dye.pdb', _additional_substructures=[mod_res])
     17@{ shape: rectangle, label: "Please write in to our <a href='https://github.com/openforcefield/ptm_prototype/issues' target='_blank'>issue tracker</a> and let us know which representation of your modified amino acid/covalent attachment you DO have."}
     17-->14
 
+    20@{ shape: rectangle, label: "To solvate and assign parameters to the loaded Topology, start at the 'Solvate' or 'Parameterize' step in our <a href='https://github.com/openforcefield/ptm_prototype' target='_blank'>PTM Prototype notebook</a>"}
+
+
+```
+
+
+## Occasional installation issues
+
+Distributions like Arch with very recent Glibc (>=2.41) don't play well with the version of PyTorch installed in the above configuration. If you get an "ImportError: libtorch_cpu.so: cannot enable executable stack as shared object requires: Invalid argument" error, try:
+
+```shell
+git clone https://github.com/openforcefield/ptm_prototype.git
+cd ptm_prototype
+micromamba create -n openff_ptm_prototype -f env.yaml
+micromamba run -n openff_ptm_prototype jupyter lab ptm_sim.ipynb
 ```
