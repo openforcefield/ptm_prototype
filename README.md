@@ -51,6 +51,7 @@ micromamba run -n openff_ptm_prototype jupyter lab ptm_sim.ipynb
 
 
 ```mermaid
+%%{init: {'themeVariables': {'fontSize': '20px'}}}%%
 flowchart TB
     0@{ shape: diamond, label: "Do you have a structure of the modified protein with all hydrogens added?" }
     0-->|No|0A
