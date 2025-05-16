@@ -78,7 +78,7 @@ flowchart TB
     
     2AB@{ shape: rectangle, label: "<pre style='white-space: pre-wrap; text-align: left; width: 500px;'>offmol = Molecule.from_file('protein.sdf')
     #(then optionally)
-    offmol.percieve_residues()
+    offmol.perceive_residues()
     # and finally
     top = offmol.to_topology()</pre>"}
     2AB-->20
@@ -100,7 +100,8 @@ for atom in mol.atoms:
 &nbsp;&nbsp;&nbsp;&nbsp;atom.metadata['substructure_atom'] = True
 smarts = 'C(=O)C([H:1])CC(=O)'
 # Since this pattern will be found multiple times due to symmetry, only use 
-# the first match ([0}) to identify a single leaving hydrogen. 
+# the first match ([0]) to identify a single leaving hydrogen. 
+for atom_idx in mol.chemical_environment_matches(smarts)[0]:
 &nbsp;&nbsp;&nbsp;&nbsp;print(f'marking {atom_idx=} as leaving')
 &nbsp;&nbsp;&nbsp;&nbsp;mol.atom(atom_idx).metadata['substructure_atom'] = False
 top = Topology.from_pdb('3ip9_dye.pdb', _additional_substructures=[mol])</pre>"}
@@ -146,7 +147,7 @@ for atom in mod_res.atoms:
 &nbsp;&nbsp;&nbsp;&nbsp;atom.metadata['substructure_atom'] = True
 backbone_smarts = '[H:1][NH2X3][CH1X4][CH0X3](=[OH0X1])[OX2H1:2][H:3]'
 # Since this pattern will be found multiple times due to symmetry, only use 
-#the first match ([0}) to identify a single leaving hydrogen. 
+#the first match ([0]) to identify a single leaving hydrogen. 
 for atom_idx in mod_res.chemical_environment_matches(backbone_smarts)[0]:
 &nbsp;&nbsp;&nbsp;&nbsp;print(f'marking {atom_idx=} as leaving')
 &nbsp;&nbsp;&nbsp;&nbsp;mod_res.atom(atom_idx).metadata['substructure_atom'] = False
