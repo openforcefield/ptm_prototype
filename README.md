@@ -7,6 +7,8 @@ The PTM prototype was updated on November 6, 2025 to be easier and more represen
 1. A new version of Pablo makes residue specification much easier
 2. Simplified parametrization with the release of the OpenFF 3.0.0-alpha0 "Rosemary" Alpha force field
 
+It has since been updated to install the latest version of Pablo.
+
 ## Short description
 
 Run this notebook to see how to parameterize proteins with PTMs using OpenFF. Then try simulating your own modified protein, and write in to this repo's issue tracker to let us know how we can make it easier for your use cases (in particular, how we can help you define `ResidueTemplates` more easily using your inputs).
