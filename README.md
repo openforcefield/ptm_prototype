@@ -18,7 +18,7 @@ Run this notebook to see how to parameterize proteins with PTMs using OpenFF. Th
 ```shell
 git clone https://github.com/openforcefield/ptm_prototype.git
 cd ptm_prototype
-micromamba create -n openff_ptm_prototype -c conda-forge -f env.yaml
+micromamba env create -n openff_ptm_prototype -c conda-forge -f env.yaml
 micromamba run -n openff_ptm_prototype jupyter lab ptm_sim.ipynb
 ```
 
